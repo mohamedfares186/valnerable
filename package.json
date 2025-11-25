@@ -1,16 +1,21 @@
 {
-  "name": "reflected",
+  "name": "vulnerable",
   "version": "0.0.1",
-  "description": "",
+  "description": "Vulnerable web application",
   "main": "dist/server.js",
   "scripts": {
     "build": "tsc",
-    "start": "node --watch dist/server.js",
-    "dev": "node --import=tsx --watch src/server.ts",
-    "test": "jest",
-    "lint": "eslint ./src/**/*.ts"
+    "start": "node dist/server.js",
+    "dev": "tsx watch src/server.ts",
+    "lint": "eslint ./src/**/*.ts",
+    "db:dev": "tsx src/config/db.ts"
   },
-  "keywords": [],
+  "keywords": [
+    "typescript",
+    "nodejs",
+    "javascript",
+    "ESM"
+  ],
   "author": "Mohamed Fares",
   "license": "MIT",
   "type": "module",
@@ -18,18 +23,15 @@
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
+    "sqlite3": "^5.1.7",
     "winston": "^3.18.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.0",
     "@types/express": "^5.0.5",
-    "@types/node": "^24.9.2",
     "eslint": "^9.39.0",
     "globals": "^16.4.0",
-    "jest": "^30.2.0",
     "jiti": "^2.6.1",
-    "supertest": "^7.1.4",
-    "ts-node": "^10.9.2",
     "tsx": "^4.20.6",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.46.2"

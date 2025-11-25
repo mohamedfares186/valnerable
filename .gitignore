@@ -1,5 +1,11 @@
-# Node Modules
 node_modules/
+dist/
 
-# Environment Variables
-.env
+.env*
+
+logs/
+*.log
+
+database/
+*.sqlite*
+*.db

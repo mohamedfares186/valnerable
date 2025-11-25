@@ -1,6 +1,4 @@
 {
-  "ts-node": { "esm": true },
-
   // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
     // File Layout
@@ -9,9 +7,9 @@
 
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
-    "module": "esnext",
-    "target": "es2022",
-    "types": [],
+    "module": "nodenext",
+    "target": "esnext",
+    "moduleResolution": "nodenext",
 
     // Other Outputs
     "sourceMap": true,
@@ -35,11 +33,7 @@
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
     "skipLibCheck": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
-    "allowImportingTsExtensions": true
   },
-  "include": ["src/server.ts"],
-  "exclude": ["node_modules"]
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules/"]
 }
