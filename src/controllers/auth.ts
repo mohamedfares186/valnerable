@@ -1,54 +1,102 @@
 import { Router } from "express";
 import path from "path";
 import { fileURLToPath } from "url";
-import db from "../config/db.js";
+import {
+  getUserByUsername,
+  getUserByEmail,
+  createUser,
+} from "../models/users.js";
+import jwt from "jsonwebtoken";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const router = Router();
 
+const jwtSecret = "secret";
+
 router.get("/login", (req, res) => {
-  return res.sendFile(path.join(__dirname, "../../public", "auth/login.html"));
+  return res.sendFile(path.join(__dirname, "../../public", "login.html"));
 });
 
-router.post("/login/user", (req, res) => {
+router.post("/login/user", async (req, res) => {
   const { username, password } = req.body;
 
-  // VULNERABLE: SQL Injection
-  const query = `SELECT * FROM users WHERE username = '${username}' AND password = '${password}'`;
+  if (!username || !password) {
+    res.status(400).json({ message: "All fields are required" });
+    return res.redirect("/login");
+  }
 
-  db.get(query, (err, row) => {
-    if (err) {
-      return res.status(500).json({ message: "Database error" });
-    } else if (row) {
-      return res.redirect("/");
-    } else {
-      return res.redirect("/login");
-    }
+  const check = await getUserByUsername(username);
+
+  if (!check) {
+    res.status(401).json({ message: "Invalid Username" });
+    return res.redirect("/login");
+  }
+
+  if (check.password !== password) {
+    res.status(401).json({ message: "Invalid Password" });
+    return res.redirect("/login");
+  }
+
+  const token = jwt.sign(
+    { userId: check.user_id, role: check.role, username: check.username },
+    jwtSecret
+  );
+
+  res.cookie("access-token", token, {
+    httpOnly: false,
+    secure: false,
   });
+  return res.redirect("/");
 });
 
 router.get("/register", (req, res) => {
-  return res.sendFile(
-    path.join(__dirname, "../../public", "auth/register.html")
-  );
+  return res.sendFile(path.join(__dirname, "../../public", "register.html"));
 });
 
-router.post("/register/user", (req, res) => {
-  const { name, email, username, password } = req.body;
+router.post("/register/user", async (req, res) => {
+  const { name, email, username, password, repeatPassword } = req.body;
 
-  // VULNERABLE: SQL Injection
-  const query = `INSERT INTO users (name, email, username, password) VALUES ('${name}', '${email}', '${username}', '${password}')`;
+  if (!name || !email || !username || !password || !repeatPassword)
+    return res
+      .status(400)
+      .json({ message: "All feilds are required" })
+      .redirect("/register");
 
-  db.run(query, function (err) {
-    if (err) {
-      return res
-        .status(500)
-        .json({ message: "Database error", error: err.message });
-    }
-    return res.redirect("/login");
+  if (password !== repeatPassword)
+    return res.status(400).json({ message: "Passwords do not match" });
+
+  const checkUsername = await getUserByUsername(username);
+  if (checkUsername)
+    return res.status(409).json({ message: "Username already exists" });
+
+  const checkEmail = await getUserByEmail(email);
+  if (checkEmail)
+    return res.status(409).json({ message: "Email already exists" });
+
+  const newUser = await createUser({
+    name,
+    email,
+    username,
+    password,
+    role: "user",
   });
+
+  if (!newUser)
+    return res
+      .status(500)
+      .json({ message: "Internal Server Error" })
+      .redirect("/register");
+
+  res.status(201);
+
+  return res.redirect("/login");
+});
+
+router.post("/logout", (req, res) => {
+  res.clearCookie("access-token");
+  return res.redirect("/");
 });
 
 export default router;

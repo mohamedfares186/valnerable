@@ -1,14 +1,13 @@
 {
   "name": "vulnerable",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Vulnerable web application",
   "main": "dist/server.js",
   "scripts": {
     "build": "tsc",
     "start": "node dist/server.js",
     "dev": "tsx watch src/server.ts",
-    "lint": "eslint ./src/**/*.ts",
-    "db:dev": "tsx src/config/db.ts"
+    "lint": "eslint ./src/**/*.ts"
   },
   "keywords": [
     "typescript",
@@ -20,15 +19,19 @@
   "license": "MIT",
   "type": "module",
   "dependencies": {
+    "cookie-parser": "^1.4.7",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
-    "sqlite3": "^5.1.7",
+    "pg": "^8.16.3",
     "winston": "^3.18.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.0",
+    "@types/cookie-parser": "^1.4.10",
     "@types/express": "^5.0.5",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/pg": "^8.15.6",
     "eslint": "^9.39.0",
     "globals": "^16.4.0",
     "jiti": "^2.6.1",

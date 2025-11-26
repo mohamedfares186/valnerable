@@ -23,5 +23,12 @@ jobs:
           npm install
           npm run lint
 
-      - name: Build docker image
-        run: docker build -t app:latest .
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v5
+
+      - name: Docker Compose Up
+        run: |
+          docker compose up --build -d

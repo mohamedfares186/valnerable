@@ -1,33 +1,25 @@
-import sqlite3 from "sqlite3";
+import { Pool } from "pg";
 import { logger } from "../middleware/logger.js";
 
-export const db = new sqlite3.Database("database/dev.sqlite3", (err) => {
-  if (err) {
-    logger.error(`Error connecting to the Database: ${err}`);
-  } else {
-    logger.info(`Database connected successfully`);
-  }
+const pool = new Pool({
+  host: process.env.POSTGRES_HOST || "localhost",
+  user: process.env.POSTGRES_USER || "postgres",
+  database: process.env.POSTGRES_DB || "vuln_app",
+  password: process.env.POSTGRES_PASSWORD || "12345678",
+  port: (process.env.POSTGRES_PORT as unknown as number) || 5002,
+  ssl: false,
+  max: 20,
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 10000,
 });
 
-db.serialize(() => {
-  db.run(
-    `
-    CREATE TABLE IF NOT EXISTS users (
-      id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-      name TEXT NOT NULL,
-      username TEXT NOT NULL,
-      email TEXT NOT NULL,
-      password TEXT NOT NULL
-    )
-  `,
-    (err) => {
-      if (err) {
-        logger.error(`Error creating users table: ${err}`);
-      } else {
-        logger.info(`Database has been set successfully`);
-      }
-    }
-  );
+pool.on("error", (error: Error) => {
+  logger.error(`Error connecting to the database: ${error}`);
+  process.exit(-1);
 });
 
-export default db;
+pool.on("connect", () => {
+  logger.info("Connected to the database");
+});
+
+export default pool;
