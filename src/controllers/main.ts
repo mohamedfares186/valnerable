@@ -7,6 +7,10 @@ const __dirname = path.dirname(__filename);
 
 const router = Router();
 
+router.get("/robots.txt", (req, res) => {
+  return res.sendFile(path.join(__dirname, "../../", "robots.txt"));
+});
+
 router.get("/", (req, res) => {
   return res.sendFile(path.join(__dirname, "../../public", "index.html"));
 });
@@ -14,14 +18,6 @@ router.get("/", (req, res) => {
 router.post("/search", (req, res) => {
   const { search } = req.body;
   return res.send(`${search} is not found`);
-});
-
-router.get("/about", (req, res) => {
-  return res.sendFile(path.join(__dirname, "../../public", "about.html"));
-});
-
-router.get("/service", (req, res) => {
-  return res.sendFile(path.join(__dirname, "../../public", "service.html"));
 });
 
 router.get("/contact", (req, res) => {

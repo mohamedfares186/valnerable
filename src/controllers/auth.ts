@@ -7,6 +7,7 @@ import {
   createUser,
 } from "../models/users.js";
 import jwt from "jsonwebtoken";
+import authenticate from "../middleware/isAuthenticated.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -19,7 +20,7 @@ router.get("/login", (req, res) => {
   return res.sendFile(path.join(__dirname, "../../public", "login.html"));
 });
 
-router.post("/login/user", async (req, res) => {
+router.post("/api/v1/auth/login", async (req, res) => {
   const { username, password } = req.body;
 
   if (!username || !password) {
@@ -55,7 +56,7 @@ router.get("/register", (req, res) => {
   return res.sendFile(path.join(__dirname, "../../public", "register.html"));
 });
 
-router.post("/register/user", async (req, res) => {
+router.post("/api/v1/auth/register", async (req, res) => {
   const { name, email, username, password, repeatPassword } = req.body;
 
   if (!name || !email || !username || !password || !repeatPassword)
@@ -94,7 +95,7 @@ router.post("/register/user", async (req, res) => {
   return res.redirect("/login");
 });
 
-router.post("/logout", (req, res) => {
+router.post("/logout", authenticate, (req, res) => {
   res.clearCookie("access-token");
   return res.redirect("/");
 });

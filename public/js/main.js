@@ -49,7 +49,7 @@ function updateNavigation() {
   if (user && loginLink) {
     loginLink.outerHTML = `
     <div class="logged-in-nav">
-      <a href="/user/dashboard">${user.username} dashboard</a> /
+      <a href="${user.role === 'admin' ? '/admin/dashboard' : '/user/dashboard'}">${user.username} dashboard</a> /
       <form class="logout-form" action="/logout" method="POST">
         <button type="submit">Logout</button>
       </form>
