@@ -5,6 +5,7 @@ import {
   getUserByUsername,
   getUserByEmail,
   createUser,
+  userLogin,
 } from "../models/users.js";
 import jwt from "jsonwebtoken";
 import authenticate from "../middleware/isAuthenticated.js";
@@ -28,15 +29,10 @@ router.post("/api/v1/auth/login", async (req, res) => {
     return res.redirect("/login");
   }
 
-  const check = await getUserByUsername(username);
+  const check = await userLogin(username, password);
 
   if (!check) {
-    res.status(401).json({ message: "Invalid Username" });
-    return res.redirect("/login");
-  }
-
-  if (check.password !== password) {
-    res.status(401).json({ message: "Invalid Password" });
+    res.status(401).json({ message: "Invalid Username and/or Password" });
     return res.redirect("/login");
   }
 
