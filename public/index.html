@@ -10,15 +10,20 @@
   <body>
     <header>
       <nav>
-        <img src="./img/favicon.svg" title="logo" />
+        <div style="display: flex; align-items: center; gap: 1rem">
+          <img src="./img/favicon.svg" alt="logo" />
+          <span class="logo-text"><strong>TechStore</strong></span>
+        </div>
         <ul>
           <li><a href="/">Home</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a href="/shop">Shop</a></li>
           <li><a href="/contact">Contact Us</a></li>
         </ul>
         <a href="/login">Login</a>
       </nav>
       <section>
-        <h1>Search through thousands of items in our shop</h1>
+        <h1>Search through thousands of products in our shop</h1>
         <form class="search-form" action="/search" method="POST">
           <input type="search" name="search" placeholder="Search" />
           <button type="submit">Search</button>
@@ -27,52 +32,8 @@
     </header>
     <main>
       <section class="container">
-        <h2>Items</h2>
-        <div class="card">
-          <img src="" />
-          <h3>item</h3>
-          <p>item description</p>
-        </div>
-        <div class="card">
-          <img src="" />
-          <h3>item</h3>
-          <p>item description</p>
-        </div>
-        <div class="card">
-          <img src="" />
-          <h3>item</h3>
-          <p>item description</p>
-        </div>
-        <div class="card">
-          <img src="" />
-          <h3>item</h3>
-          <p>item description</p>
-        </div>
-        <div class="card">
-          <img src="" />
-          <h3>item</h3>
-          <p>item description</p>
-        </div>
-        <div class="card">
-          <img src="" />
-          <h3>item</h3>
-          <p>item description</p>
-        </div>
-        <div class="card">
-          <img src="" />
-          <h3>item</h3>
-          <p>item description</p>
-        </div>
-        <div class="card">
-          <img src="" />
-          <h3>item</h3>
-          <p>item description</p>
-        </div>
-        <div class="card">
-          <img src="" />
-          <h3>item</h3>
-          <p>item description</p>
-        </div>
+        <h2>Products</h2>
+        <div class="home-container"></div>
       </section>
     </main>
     <footer>

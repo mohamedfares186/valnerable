@@ -85,10 +85,7 @@ router.post("/api/v1/auth/register", async (req, res) => {
   });
 
   if (!newUser)
-    return res
-      .status(500)
-      .json({ message: "Internal Server Error" })
-      .redirect("/register");
+    return res.status(500).json({ message: "Internal Server Error" });
 
   res.status(201);
 

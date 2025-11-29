@@ -7,7 +7,9 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "dev": "tsx watch src/server.ts",
-    "lint": "eslint ./src/**/*.ts"
+    "lint": "eslint ./src/**/*.ts",
+    "setup:dev": "tsx src/scripts/setup.ts",
+    "setup": "node dist/scripts/setup.js"
   },
   "keywords": [
     "typescript",

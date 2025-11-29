@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="../css/admin.css" />
+    <link rel="icon" type="image/svg+xml" href="../img/favicon.svg" />
+  </head>
+  <body>
+    <main>
+      <div class="card">
+        <h1>Login</h1>
+        <form action="/api/v1/auth/login" method="POST">
+          <input type="username" name="username" placeholder="Username" />
+          <input type="password" name="password" placeholder="Password" />
+          <button type="submit">Login</button>
+        </form>
+      </div>
+    </main>
+  </body>
+</html>

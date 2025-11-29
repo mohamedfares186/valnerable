@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router, type Request, type Response } from "express";
 import path from "path";
 import { fileURLToPath } from "url";
 import { createMessage } from "../models/messages.js";
@@ -8,49 +8,51 @@ const __dirname = path.dirname(__filename);
 
 const router = Router();
 
-router.get("/robots.txt", (req, res) => {
-  return res.sendFile(path.join(__dirname, "../../", "robots.txt"));
+router.get("/robots.txt", (req: Request, res: Response) => {
+  return res.status(200).sendFile(path.join(__dirname, "../../", "robots.txt"));
 });
 
-router.get("/", (req, res) => {
-  return res.sendFile(path.join(__dirname, "../../public", "index.html"));
+router.get("/", (req: Request, res: Response) => {
+  return res
+    .status(200)
+    .sendFile(path.join(__dirname, "../../public", "index.html"));
 });
 
-router.post("/search", (req, res) => {
-  const { search } = req.body;
-  return res.send(`${search} is not found`);
+router.get("/about", (req: Request, res: Response) => {
+  return res
+    .status(200)
+    .sendFile(path.join(__dirname, "../../public", "about.html"));
 });
 
-router.get("/contact", (req, res) => {
-  return res.sendFile(path.join(__dirname, "../../public", "contact.html"));
+router.get("/shop", (req: Request, res: Response) => {
+  return res.sendFile(path.join(__dirname, "../../public", "shop.html"));
 });
 
-router.get("/contact/message", async (req, res) => {
+router.get("/product", (req: Request, res: Response) => {
+  return res
+    .status(200)
+    .sendFile(path.join(__dirname, "../../public", "product.html"));
+});
+
+router.get("/contact", (req: Request, res: Response) => {
+  return res
+    .status(200)
+    .sendFile(path.join(__dirname, "../../public", "contact.html"));
+});
+
+router.get("/api/v1/contact/response", async (req: Request, res: Response) => {
   const { email, message } = req.query;
 
   if (!email || email === undefined || !message || message === undefined)
-    return res.send(`
-      <h1>All feilds are required</h1>
-    `);
-
-  console.log(`Error sending contact message: ${email} and ${message}`);
+    return res.status(400).json({ message: "All fields are required" });
 
   const sendMessage = await createMessage(email as string, message as string);
   if (!sendMessage)
-    return res.send(`Something went wrong, please try again later`);
+    return res.status(500).json({ message: "Failed to send message" });
 
-  console.log(`Error sending contact message: ${email} and ${message}`);
-
-  return res.send(
-    `
-    <h1>Thanks for contacting us.</h1> 
-    
-    <p>${email}Your message:</p>
-    <p>${message}</p>
-    
-    <p>We have received your message and we will review it and get back to you as soon as possible.</p>
-  `
-  );
+  return res.status(200).json({
+    message: `Thanks for contacting us. We recieved your message ${message} successfully and we will get back to you soon!`,
+  });
 });
 
 export default router;

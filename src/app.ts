@@ -1,6 +1,9 @@
 import express, {
   type ErrorRequestHandler,
+  type NextFunction,
+  type Request,
   type RequestHandler,
+  type Response,
 } from "express";
 import cookieParser from "cookie-parser";
 import requestLogger from "./middleware/logger.js";
@@ -10,6 +13,7 @@ import main from "./controllers/main.js";
 import auth from "./controllers/auth.js";
 import admin from "./controllers/admin.js";
 import user from "./controllers/user.js";
+import products from "./controllers/products.js";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -28,6 +32,14 @@ app.use("/", auth);
 app.use("/", main);
 app.use("/admin", admin);
 app.use("/user", user);
+app.use("/api/v1", products);
+
+// eslint-disable-next-line
+app.use((req: Request, res: Response, next: NextFunction) => {
+  return res
+    .status(404)
+    .sendFile(path.join(__dirname, "../public", "error/404.html"));
+});
 
 app.use(error as ErrorRequestHandler);
 

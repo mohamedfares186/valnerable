@@ -10,7 +10,8 @@ export interface User {
   role: string;
 }
 
-await pool.query(`
+export const UserTable = async () => {
+  return await pool.query(`
   CREATE TABLE IF NOT EXISTS users (
     user_id SERIAL PRIMARY KEY NOT NULL,
     name VARCHAR(100) NOT NULL,
@@ -20,6 +21,13 @@ await pool.query(`
     role VARCHAR(50) NOT NULL DEFAULT 'user'
   );
   `);
+};
+
+export const UserSeq = async () => {
+  return await pool.query(
+    `ALTER SEQUENCE users_user_id_seq RESTART WITH 10000;`
+  );
+};
 
 export const getUserByUsername = async (username: string) => {
   try {
