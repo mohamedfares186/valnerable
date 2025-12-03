@@ -11,15 +11,17 @@
     <main>
       <div class="card">
         <h1>Login</h1>
-        <form action="/api/v1/auth/login" method="POST">
+        <form class="login-form">
           <input type="username" name="username" placeholder="Username" />
           <input type="password" name="password" placeholder="Password" />
           <button type="submit">Login</button>
         </form>
         <div>
           <p>Don't have an account? <a href="/register">Register</a> Now.</p>
+          <p class="login-res-msg" style="font-weight: 800"></p>
         </div>
       </div>
     </main>
+    <script src="./js/auth.js"></script>
   </body>
 </html>

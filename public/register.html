@@ -11,7 +11,7 @@
     <main>
       <div class="card">
         <h1>Register</h1>
-        <form action="/api/v1/auth/register" method="POST">
+        <form class="register-form">
           <input type="text" name="name" placeholder="Name" required />
           <input type="email" name="email" placeholder="Email" required />
           <input type="text" name="username" placeholder="Username" required />
@@ -31,8 +31,10 @@
         </form>
         <div>
           <p>Already have an account? <a href="/login">Login</a> Now.</p>
+          <p class="register-res-msg"></p>
         </div>
       </div>
     </main>
+    <script src="./js/auth.js"></script>
   </body>
 </html>

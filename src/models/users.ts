@@ -39,7 +39,7 @@ export const userLogin = async (username: string, password: string) => {
 export const getUserByUsername = async (username: string) => {
   try {
     const result = await pool.query(
-      `SELECT * FROM users WHERE username = '${username};`
+      `SELECT * FROM users WHERE username = '${username}';`
     );
     return result.rows[0];
   } catch (error) {

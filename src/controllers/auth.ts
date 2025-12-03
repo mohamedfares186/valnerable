@@ -25,15 +25,15 @@ router.post("/api/v1/auth/login", async (req, res) => {
   const { username, password } = req.body;
 
   if (!username || !password) {
-    res.status(400).json({ message: "All fields are required" });
-    return res.redirect("/login");
+    return res.status(400).json({ message: "All fields are required" });
   }
 
   const check = await userLogin(username, password);
 
   if (!check) {
-    res.status(401).json({ message: "Invalid Username and/or Password" });
-    return res.redirect("/login");
+    return res
+      .status(401)
+      .json({ message: "Invalid Username and/or Password" });
   }
 
   const token = jwt.sign(
@@ -45,7 +45,7 @@ router.post("/api/v1/auth/login", async (req, res) => {
     httpOnly: false,
     secure: false,
   });
-  return res.redirect("/");
+  return res.status(200).json({ message: "logged in successfully" });
 });
 
 router.get("/register", (req, res) => {
@@ -56,10 +56,7 @@ router.post("/api/v1/auth/register", async (req, res) => {
   const { name, email, username, password, repeatPassword } = req.body;
 
   if (!name || !email || !username || !password || !repeatPassword)
-    return res
-      .status(400)
-      .json({ message: "All feilds are required" })
-      .redirect("/register");
+    return res.status(400).json({ message: "All feilds are required" });
 
   if (password !== repeatPassword)
     return res.status(400).json({ message: "Passwords do not match" });
@@ -83,9 +80,7 @@ router.post("/api/v1/auth/register", async (req, res) => {
   if (!newUser)
     return res.status(500).json({ message: "Internal Server Error" });
 
-  res.status(201);
-
-  return res.redirect("/login");
+  return res.status(201).json({ message: "Registered successfully" });
 });
 
 router.post("/logout", authenticate, (req, res) => {
